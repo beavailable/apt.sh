@@ -43,7 +43,7 @@ Most commands are similar to the real `apt`'s commands, but:
 - `--mark-auto` will mark packages as automatically installed in any cases
 - `remove` and `autoremove` imply `--purge` by default
 - `mark` is similar to `apt-mark`
-- `-l` and `-s` are similar to `dpkg -L` and `dpkg -S` respecitvely
+- `-l` and `-s` are similar to `dpkg -L` and `dpkg -S` respectively
 
 # Installation
 ```bash
