@@ -25,7 +25,9 @@ COMMANDS:
         --mark-auto
     full-upgrade                  upgrade the system
     remove PACKAGES               remove packages
+        --keep-configurations
     autoremove [PACKAGES]         automatically remove all unused packages
+        --keep-configurations
     clean                         remove all files from the cache
     autoclean                     remove old packages from the cache
     mark OPTION PACKAGES          mark packages as manually or automatically installed

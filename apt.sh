@@ -81,14 +81,27 @@ apt_full-upgrade() {
     pacman -Su
 }
 apt_remove() {
-    pacman -Rcn "$@"
+    local opts
+    if [ "$1" = '--keep-configurations' ]; then
+        shift
+        opts='-Rc'
+    else
+        opts='-Rcn'
+    fi
+    pacman $opts "$@"
 }
 apt_autoremove() {
-    local list
+    local opts list
+    if [ "${1:-}" = '--keep-configurations' ]; then
+        shift
+        opts='-Rcs'
+    else
+        opts='-Rcsn'
+    fi
     if [ -n "${1:-}" ]; then
-        pacman -Rcsn "$@"
+        pacman $opts "$@"
     elif list=$(pacman -Qqdt); then
-        pacman -Rsn $(tr '\n' ' ' <<<"$list")
+        pacman $opts $(tr '\n' ' ' <<<"$list")
     fi
 }
 apt_clean() {
@@ -146,7 +159,9 @@ apt_help() {
     echo '        --mark-auto'
     echo '    full-upgrade                  upgrade the system'
     echo '    remove PACKAGES               remove packages'
+    echo '        --keep-configurations'
     echo '    autoremove [PACKAGES]         automatically remove all unused packages'
+    echo '        --keep-configurations'
     echo '    clean                         remove all files from the cache'
     echo '    autoclean                     remove old packages from the cache'
     echo '    mark OPTION PACKAGES          mark packages as manually or automatically installed'
@@ -192,8 +207,18 @@ _apt() {
                     _apt_complete_packages
                 fi
                 ;;
-            remove | autoremove | \-l)
+            remove | autoremove)
+                if [ "$cword" = 2 ] && [[ "$cur" == --* ]]; then
+                    COMPREPLY=($(compgen -W '--keep-configurations' -- "$cur"))
+                else
+                    _apt_complete_packages 'local'
+                fi
+                ;;
+            \-l)
                 _apt_complete_packages 'local'
+                ;;
+            \-s)
+                _filedir
                 ;;
             mark)
                 if [ "$cword" = 2 ] && [[ "$cur" == --* ]]; then
@@ -201,9 +226,6 @@ _apt() {
                 else
                     _apt_complete_packages 'local'
                 fi
-                ;;
-            \-s)
-                _filedir
                 ;;
         esac
     fi
