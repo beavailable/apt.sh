@@ -4,16 +4,6 @@ This is a user-friendly shell wrapper for `pacman` in `msys2`, you can use it ju
 # Why not just use pacman
 Because `pacman` sucks.
 
-# Installation
-```bash
-curl -Lfo /usr/local/bin/apt https://raw.githubusercontent.com/beavailable/apt.sh/main/apt.sh
-```
-
-# Uninstallation
-```bash
-rm -f /usr/local/bin/apt /usr/local/share/bash-completion/completions/apt
-```
-
 # Usage
 ```
 usage: apt.sh COMMAND [OPTIONS] [arguments]
@@ -52,6 +42,16 @@ Most commands are similar to the real `apt`'s commands, but:
 - `remove` and `autoremove` imply `--purge`
 - `mark` is similar to `apt-mark`
 - `-l` and `-s` are similar to `dpkg -L` and `dpkg -S` respecitvely
+
+# Installation
+```bash
+curl -Lfo /usr/local/bin/apt https://raw.githubusercontent.com/beavailable/apt.sh/main/apt.sh
+```
+
+# Uninstallation
+```bash
+rm -f /usr/local/bin/apt /usr/local/share/bash-completion/completions/apt
+```
 
 # Tips
 After installing the completion file, in all cases that a package name is needed as an argument, you can simply type `-<tab>` to complete the current `MINGW_PACKAGE_PREFIX` for you.
