@@ -41,7 +41,7 @@ COMMANDS:
 Most commands are similar to the real `apt`'s commands, but:
 - `install` and `reinstall` can also accept urls or files as arguments
 - `--mark-auto` will mark packages as automatically installed in any cases
-- `remove` and `autoremove` imply `--purge`
+- `remove` and `autoremove` imply `--purge` by default
 - `mark` is similar to `apt-mark`
 - `-l` and `-s` are similar to `dpkg -L` and `dpkg -S` respecitvely
 
