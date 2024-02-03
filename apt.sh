@@ -121,6 +121,14 @@ apt_-l() {
 apt_-s() {
     pacman -Qo "$@"
 }
+apt_-u() {
+    if curl --connect-time 10 -Lfo /usr/local/bin/.apt 'https://raw.githubusercontent.com/beavailable/apt.sh/main/apt.sh'; then
+        mv /usr/local/bin/.apt /usr/local/bin/apt
+        apt completion
+    else
+        rm -f /usr/local/bin/.apt
+    fi
+}
 apt_completion() {
     mkdir -p /usr/local/share/bash-completion/completions
     {
@@ -157,6 +165,7 @@ apt_help() {
     echo '        --manual'
     echo '    -l PACKAGES                   list files owned by specific packages'
     echo '    -s FILES                      search for packages that own specific files'
+    echo '    -u                            upgrade this tool from github'
     echo '    completion                    install the completion file'
     echo '    help                          show this help message'
 }
@@ -177,7 +186,7 @@ _apt() {
     local cur prev words cword
     _init_completion || return
     if [ "$cword" = 1 ]; then
-        COMPREPLY=($(compgen -W '-l -s autoclean autoremove clean completion download full-upgrade help install list mark reinstall remove search show update' -- "$cur"))
+        COMPREPLY=($(compgen -W '-l -s -u autoclean autoremove clean completion download full-upgrade help install list mark reinstall remove search show update' -- "$cur"))
     else
         case "${words[1]}" in
             update)
@@ -203,15 +212,15 @@ _apt() {
             remove | autoremove | -l)
                 _apt_complete_packages 'local'
                 ;;
-            \-s)
-                _filedir
-                ;;
             mark)
                 if [ "$cword" = 2 ] && [[ "$cur" == --* ]]; then
                     COMPREPLY=($(compgen -W '--auto --manual' -- "$cur"))
                 else
                     _apt_complete_packages 'local'
                 fi
+                ;;
+            \-s)
+                _filedir
                 ;;
         esac
     fi

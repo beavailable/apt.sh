@@ -34,6 +34,7 @@ COMMANDS:
         --manual
     -l PACKAGES                   list files owned by specific packages
     -s FILES                      search for packages that own specific files
+    -u                            upgrade this tool from github
     completion                    install the completion file
     help                          show this help message
 ```
