@@ -6,6 +6,9 @@ apt_update() {
     pacman -Sy
     if n=$(pacman -Qu | wc -l); then
         echo "$n packages can be upgraded. Run 'apt list --upgradable' to see them."
+        if [ "${1:-}" = '--full-upgrade' ]; then
+            apt_full-upgrade
+        fi
     else
         echo 'All packages are up to date.'
     fi
@@ -144,6 +147,7 @@ apt_help() {
     echo
     echo 'COMMANDS:'
     echo '    update                        update list of available packages'
+    echo '        --full-upgrade'
     echo '    show PACKAGES                 show package details'
     echo '    download PACKAGES             download packages'
     echo '    search REGEX                  search packages'
@@ -192,6 +196,11 @@ _apt() {
         COMPREPLY=($(compgen -W '-l -s autoclean autoremove clean completion download full-upgrade help install list mark reinstall remove search show update' -- "$cur"))
     else
         case "${words[1]}" in
+            update)
+                if [ "$cword" = 2 ]; then
+                    COMPREPLY=($(compgen -W '--full-upgrade' -- "$cur"))
+                fi
+                ;;
             show | download)
                 _apt_complete_packages
                 ;;
