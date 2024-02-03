@@ -146,7 +146,7 @@ apt_help() {
     echo "usage: $(basename $0) COMMAND [OPTIONS] [arguments]"
     echo
     echo 'COMMANDS:'
-    echo '    update                        update list of available packages'
+    echo '    update [OPTION]               update list of available packages'
     echo '        --full-upgrade'
     echo '    show PACKAGES                 show package details'
     echo '    download PACKAGES             download packages'

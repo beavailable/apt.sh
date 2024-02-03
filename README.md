@@ -9,7 +9,7 @@ Because `pacman` sucks.
 usage: apt.sh COMMAND [OPTIONS] [arguments]
 
 COMMANDS:
-    update                        update list of available packages
+    update [OPTION]               update list of available packages
         --full-upgrade
     show PACKAGES                 show package details
     download PACKAGES             download packages
