@@ -122,7 +122,7 @@ apt_-s() {
     pacman -Qo "$@"
 }
 apt_-u() {
-    if curl --connect-time 10 -Lfo /usr/local/bin/.apt 'https://raw.githubusercontent.com/beavailable/apt.sh/main/apt.sh'; then
+    if curl --connect-timeout 10 -Lfo /usr/local/bin/.apt 'https://raw.githubusercontent.com/beavailable/apt.sh/main/apt.sh'; then
         mv /usr/local/bin/.apt /usr/local/bin/apt
         apt completion
     else
