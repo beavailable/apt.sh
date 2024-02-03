@@ -84,27 +84,13 @@ apt_full-upgrade() {
     pacman -Su
 }
 apt_remove() {
-    local opts
-    if [ "$1" = '--keep-configurations' ]; then
-        shift
-        opts='-Rc'
-    else
-        opts='-Rcn'
-    fi
-    pacman $opts "$@"
+    pacman -Rc "$@"
 }
 apt_autoremove() {
-    local opts list
-    if [ "${1:-}" = '--keep-configurations' ]; then
-        shift
-        opts='-Rcs'
-    else
-        opts='-Rcsn'
-    fi
     if [ -n "${1:-}" ]; then
-        pacman $opts "$@"
+        pacman -Rcs "$@"
     elif list=$(pacman -Qqdt); then
-        pacman $opts $(tr '\n' ' ' <<<"$list")
+        pacman -Rcs $(tr '\n' ' ' <<<"$list")
     fi
 }
 apt_clean() {
@@ -163,9 +149,7 @@ apt_help() {
     echo '        --mark-auto'
     echo '    full-upgrade                  upgrade the system'
     echo '    remove PACKAGES               remove packages'
-    echo '        --keep-configurations'
     echo '    autoremove [PACKAGES]         automatically remove all unused packages'
-    echo '        --keep-configurations'
     echo '    clean                         remove all files from the cache'
     echo '    autoclean                     remove old packages from the cache'
     echo '    mark OPTION PACKAGES          mark packages as manually or automatically installed'
@@ -216,14 +200,7 @@ _apt() {
                     _apt_complete_packages
                 fi
                 ;;
-            remove | autoremove)
-                if [ "$cword" = 2 ] && [[ "$cur" == --* ]]; then
-                    COMPREPLY=($(compgen -W '--keep-configurations' -- "$cur"))
-                else
-                    _apt_complete_packages 'local'
-                fi
-                ;;
-            \-l)
+            remove | autoremove | -l)
                 _apt_complete_packages 'local'
                 ;;
             \-s)
