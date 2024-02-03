@@ -136,7 +136,7 @@ apt_help() {
     echo '        --full-upgrade'
     echo '    show PACKAGES                 show package details'
     echo '    download PACKAGES             download packages'
-    echo '    search REGEX                  search packages'
+    echo '    search REGEX                  search for packages'
     echo '    list [OPTION]                 list packages'
     echo '        --auto-installed'
     echo '        --installed'

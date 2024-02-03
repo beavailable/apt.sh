@@ -13,7 +13,7 @@ COMMANDS:
         --full-upgrade
     show PACKAGES                 show package details
     download PACKAGES             download packages
-    search REGEX                  search packages
+    search REGEX                  search for packages
     list [OPTION]                 list packages
         --auto-installed
         --installed
