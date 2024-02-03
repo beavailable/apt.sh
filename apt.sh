@@ -122,11 +122,14 @@ apt_-s() {
     pacman -Qo "$@"
 }
 apt_-u() {
+    local ret
     if curl --connect-timeout 10 -Lfo /usr/local/bin/.apt 'https://raw.githubusercontent.com/beavailable/apt.sh/main/apt.sh'; then
         mv /usr/local/bin/.apt /usr/local/bin/apt
         apt completion
     else
+        ret=$?
         rm -f /usr/local/bin/.apt
+        return $ret
     fi
 }
 apt_completion() {
