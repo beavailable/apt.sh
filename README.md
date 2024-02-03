@@ -34,8 +34,8 @@ COMMANDS:
         --manual
     -l PACKAGES                   list files owned by specific packages
     -s FILES                      search for packages that own specific files
+    -c                            install the completion file
     -u                            upgrade this tool from github
-    completion                    install the completion file
     help                          show this help message
 ```
 Most commands are similar to the real `apt`'s commands, but:

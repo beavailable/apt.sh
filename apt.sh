@@ -121,23 +121,23 @@ apt_-l() {
 apt_-s() {
     pacman -Qo "$@"
 }
-apt_-u() {
-    local ret
-    if curl --connect-timeout 10 -Lfo /usr/local/bin/.apt 'https://raw.githubusercontent.com/beavailable/apt.sh/main/apt.sh'; then
-        mv /usr/local/bin/.apt /usr/local/bin/apt
-        apt completion
-    else
-        ret=$?
-        rm -f /usr/local/bin/.apt
-        return $ret
-    fi
-}
-apt_completion() {
+apt_-c() {
     mkdir -p /usr/local/share/bash-completion/completions
     {
         sed -nE '/^_apt.+/,/^}/p' $0
         echo "complete -F _apt apt"
     } >/usr/local/share/bash-completion/completions/apt
+}
+apt_-u() {
+    local ret
+    if curl --connect-timeout 10 -Lfo /usr/local/bin/.apt 'https://raw.githubusercontent.com/beavailable/apt.sh/main/apt.sh'; then
+        mv /usr/local/bin/.apt /usr/local/bin/apt
+        apt -c
+    else
+        ret=$?
+        rm -f /usr/local/bin/.apt
+        return $ret
+    fi
 }
 apt_help() {
     echo "usage: $(basename $0) COMMAND [OPTIONS] [arguments]"
@@ -168,8 +168,8 @@ apt_help() {
     echo '        --manual'
     echo '    -l PACKAGES                   list files owned by specific packages'
     echo '    -s FILES                      search for packages that own specific files'
+    echo '    -c                            install the completion file'
     echo '    -u                            upgrade this tool from github'
-    echo '    completion                    install the completion file'
     echo '    help                          show this help message'
 }
 _apt_complete_packages() {
@@ -189,7 +189,7 @@ _apt() {
     local cur prev words cword
     _init_completion || return
     if [ "$cword" = 1 ]; then
-        COMPREPLY=($(compgen -W '-l -s -u autoclean autoremove clean completion download full-upgrade help install list mark reinstall remove search show update' -- "$cur"))
+        COMPREPLY=($(compgen -W '-c -l -s -u autoclean autoremove clean download full-upgrade help install list mark reinstall remove search show update' -- "$cur"))
     else
         case "${words[1]}" in
             update)
