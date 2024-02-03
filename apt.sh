@@ -4,7 +4,7 @@ set -euo pipefail
 apt_update() {
     local n
     pacman -Sy
-    if n=$(pacman -Qu | wc -l); then
+    if n=$(pacman -Quq | wc -l); then
         echo "$n packages can be upgraded. Run 'apt list --upgradable' to see them."
         if [ "${1:-}" = '--full-upgrade' ]; then
             apt_full-upgrade
