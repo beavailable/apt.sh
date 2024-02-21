@@ -23,30 +23,37 @@ apt_search() {
     pacman -Ss "$@"
 }
 apt_list() {
+    local opts
     case "${1:-}" in
-        '')
-            pacman -Sl || true
-            ;;
         --installed)
-            pacman -Q || true
+            shift
+            opts='-Q'
             ;;
         --auto-installed)
-            pacman -Qd || true
+            shift
+            opts='-Qd'
             ;;
         --manual-installed)
-            pacman -Qe || true
+            shift
+            opts='-Qe'
             ;;
         --removable)
-            pacman -Qdt || true
+            shift
+            opts='-Qdt'
             ;;
         --upgradable)
-            pacman -Qu || true
+            shift
+            opts='-Qu'
             ;;
         *)
-            echo "Unknown option: $1" >&2
-            return 1
+            opts='-Sl'
             ;;
     esac
+    if [ $# = 0 ]; then
+        pacman $opts || true
+    else
+        pacman $opts --color always | grep --color=never "$@" || true
+    fi
 }
 apt_install() {
     local mark_auto opts
@@ -148,7 +155,7 @@ apt_help() {
     echo '    show PACKAGES                 show package details'
     echo '    download PACKAGES             download packages'
     echo '    search REGEX                  search for packages'
-    echo '    list [OPTION]                 list packages'
+    echo '    list [OPTION] [REGEX]         list packages'
     echo '        --auto-installed'
     echo '        --installed'
     echo '        --manual-installed'
