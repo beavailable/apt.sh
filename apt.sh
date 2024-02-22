@@ -52,7 +52,10 @@ apt_list() {
     if [ $# = 0 ]; then
         pacman $opts || true
     else
-        pacman $opts --color always | grep --color=never "$@" || true
+        if [ -t 1 ]; then
+            opts="$opts --color always"
+        fi
+        pacman $opts | grep -E "^(\\S+ )?\\S*$1\\S* \\S*[[:digit:]]\\S+( \[installed\])?\$" || true
     fi
 }
 apt_install() {
