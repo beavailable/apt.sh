@@ -14,6 +14,7 @@ COMMANDS:
     show PACKAGES                 show package details
     download PACKAGES             download packages
     search REGEX                  search for packages
+        --names-only
     list [OPTION] [REGEX]         list packages
         --auto-installed
         --installed

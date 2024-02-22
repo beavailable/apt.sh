@@ -20,7 +20,17 @@ apt_download() {
     pacman -Swdd --noconfirm --cachedir . "$@"
 }
 apt_search() {
-    pacman -Ss "$@"
+    local opts
+    if [ "${1:-}" = '--names-only' ]; then
+        shift
+        opts='-Ss'
+        if [ -t 1 ]; then
+            opts="$opts --color always"
+        fi
+        pacman $opts | grep -EA 1 --no-group-separator "^\\S+/\\S*$1\\S* \\S*[[:digit:]]\\S+( \\S*\\(\\S+\\)\\S*)?( \\S*\\[installed\\]\\S*)?\$" || true
+    else
+        pacman -Ss "$1" || true
+    fi
 }
 apt_list() {
     local opts
@@ -158,6 +168,7 @@ apt_help() {
     echo '    show PACKAGES                 show package details'
     echo '    download PACKAGES             download packages'
     echo '    search REGEX                  search for packages'
+    echo '        --names-only'
     echo '    list [OPTION] [REGEX]         list packages'
     echo '        --auto-installed'
     echo '        --installed'
@@ -209,6 +220,11 @@ _apt() {
                 ;;
             show | download)
                 _apt_complete_packages
+                ;;
+            search)
+                if [ "$cword" = 2 ]; then
+                    COMPREPLY=($(compgen -W '--names-only' -- "$cur"))
+                fi
                 ;;
             list)
                 if [ "$cword" = 2 ]; then
