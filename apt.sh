@@ -27,7 +27,7 @@ apt_search() {
         if [ -t 1 ]; then
             opts="$opts --color always"
         fi
-        pacman $opts | grep -EA 1 --no-group-separator "^\\S+/\\S*$1\\S* \\S*[[:digit:]]\\S+( \\S*\\(\\S+\\)\\S*)?( \\S*\\[installed\\]\\S*)?\$" || true
+        pacman $opts | grep -EA 1 --no-group-separator "^\\S+/\\S*$1\\S* \\S*[[:digit:]]\\S+( \\S*\\(.+\\)\\S*)?( \\S*\\[installed\\]\\S*)?\$" || true
     else
         pacman -Ss "$1" || true
     fi
