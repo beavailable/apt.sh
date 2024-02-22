@@ -65,7 +65,7 @@ apt_list() {
         if [ -t 1 ]; then
             opts="$opts --color always"
         fi
-        pacman $opts | grep -E "^(\\S+ )?\\S*$1\\S* \\S*[[:digit:]]\\S+( \\[installed\\])?\$" || true
+        pacman $opts | grep -E "^(\\S+ )?\\S*$1\\S* \\S*[[:digit:]]\\S+( \\S*\\[installed\\]\\S*)?\$" || true
     fi
 }
 apt_install() {
