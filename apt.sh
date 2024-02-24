@@ -167,7 +167,7 @@ apt_help() {
     echo '        --full-upgrade'
     echo '    show PACKAGES                 show package details'
     echo '    download PACKAGES             download packages'
-    echo '    search REGEX                  search for packages'
+    echo '    search [OPTION] REGEX         search for packages'
     echo '        --names-only'
     echo '    list [OPTION] [REGEX]         list packages'
     echo '        --auto-installed'
