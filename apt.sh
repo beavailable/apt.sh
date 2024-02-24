@@ -69,7 +69,13 @@ apt_list() {
     fi
 }
 apt_install() {
-    local mark_auto opts
+    local reinstall mark_auto opts
+    if [ "$1" = '--reinstall' ]; then
+        shift
+        reinstall=true
+    else
+        reinstall=false
+    fi
     if [ "$1" = '--mark-auto' ]; then
         shift
         mark_auto=true
@@ -81,24 +87,14 @@ apt_install() {
     else
         opts='-S'
     fi
-    pacman $opts --needed "$@"
-    $mark_auto && apt_mark --auto "$@" || true
-}
-apt_reinstall() {
-    local mark_auto opts
-    if [ "$1" = '--mark-auto' ]; then
-        shift
-        mark_auto=true
-    else
-        mark_auto=false
-    fi
-    if [[ "$1" == *://* || -f "$1" ]]; then
-        opts='-U'
-    else
-        opts='-S'
+    if ! $reinstall; then
+        opts="$opts --needed"
     fi
     pacman $opts "$@"
     $mark_auto && apt_mark --auto "$@" || true
+}
+apt_reinstall() {
+    apt_install --reinstall "$@"
 }
 apt_full-upgrade() {
     pacman -Su
