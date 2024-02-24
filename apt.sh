@@ -27,7 +27,7 @@ apt_search() {
         if [ -t 1 ]; then
             opts="$opts --color always"
         fi
-        pacman $opts | sed -E 'h;s!^\S[^/]+/(\S\[[[:digit:]]+;[[:digit:]]+m)?(\S+) .+$!\2!p;g;n' | sed -nE "/^\\S+$/{/$1/{n;p;n;p}}" || true
+        pacman $opts | sed -nE "/^\\S[^\\/]+\\/(\\S\\[[[:digit:]]+;[[:digit:]]+m)?(\\S+) .+\$/{h;s//\\2/;/$1/{g;p;n;p}}" || true
     else
         pacman -Ss "$1" || true
     fi
@@ -65,7 +65,7 @@ apt_list() {
         if [ -t 1 ]; then
             opts="$opts --color always"
         fi
-        pacman $opts | sed -E 'h;s!^(\S\[[[:digit:]]+;[[:digit:]]+m)?((msys|ucrt64|clang64|clangarm64|clang32|mingw64|mingw32) )?(\S\[[[:digit:]]+;[[:digit:]]+m)?(\S+) .+$!\5!p;g' | sed -nE "/^\\S+$/{/$1/{n;p}}" || true
+        pacman $opts | sed -nE "/^(\\S\\[[[:digit:]]+;[[:digit:]]+m)?((msys|ucrt64|clang64|clangarm64|clang32|mingw64|mingw32) )?(\\S\\[[[:digit:]]+;[[:digit:]]+m)?(\\S+) .+\$/{h;s//\\5/;/$1/{g;p}}" || true
     fi
 }
 apt_install() {
