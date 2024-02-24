@@ -41,7 +41,7 @@ COMMANDS:
     help                          show this help message
 ```
 Most commands are similar to the real `apt`'s commands, but:
-- `list` accepts a `regex expression` argument instead of a `glob pattern` argument
+- `list` accepts a `regular expression` argument instead of a `glob pattern` argument
 - `install` and `reinstall` can also accept urls as arguments
 - `--mark-auto` will mark packages as automatically installed in any cases
 - `mark` is similar to `apt-mark`
