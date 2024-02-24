@@ -113,6 +113,9 @@ apt_autoremove() {
         pacman -Rcs $(tr '\n' ' ' <<<"$list")
     fi
 }
+apt_autopurge() {
+    apt_autoremove "$@"
+}
 apt_clean() {
     pacman -Scc --noconfirm
 }
@@ -182,6 +185,7 @@ apt_help() {
     echo '    full-upgrade                  upgrade the system'
     echo '    remove PACKAGES               remove packages'
     echo '    autoremove [PACKAGES]         automatically remove all unused packages'
+    echo '    autopurge [PACKAGES]          an alias for autoremove'
     echo '    clean                         remove all files from the cache'
     echo '    autoclean                     remove old packages from the cache'
     echo '    mark OPTION PACKAGES          mark packages as manually or automatically installed'
@@ -210,7 +214,7 @@ _apt() {
     local cur prev words cword
     _init_completion || return
     if [ "$cword" = 1 ]; then
-        COMPREPLY=($(compgen -W '-c -l -s -u autoclean autoremove clean download full-upgrade help install list mark reinstall remove search show update' -- "$cur"))
+        COMPREPLY=($(compgen -W '-c -l -s -u autoclean autopurge autoremove clean download full-upgrade help install list mark reinstall remove search show update' -- "$cur"))
     else
         case "${words[1]}" in
             update)
@@ -238,7 +242,7 @@ _apt() {
                     _apt_complete_packages
                 fi
                 ;;
-            remove | autoremove | -l)
+            remove | autoremove | autopurge | -l)
                 _apt_complete_packages 'local'
                 ;;
             mark)
