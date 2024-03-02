@@ -31,7 +31,7 @@ COMMANDS:
     autopurge [PACKAGES]          an alias for autoremove
     clean                         remove all files from the cache
     autoclean                     remove old packages from the cache
-    mark OPTION PACKAGES          mark packages as manually or automatically installed
+    mark OPTION PACKAGES          mark packages
         --auto
         --manual
         --hold

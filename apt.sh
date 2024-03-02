@@ -195,7 +195,7 @@ apt_help() {
     echo '    autopurge [PACKAGES]          an alias for autoremove'
     echo '    clean                         remove all files from the cache'
     echo '    autoclean                     remove old packages from the cache'
-    echo '    mark OPTION PACKAGES          mark packages as manually or automatically installed'
+    echo '    mark OPTION PACKAGES          mark packages'
     echo '        --auto'
     echo '        --manual'
     echo '        --hold'
