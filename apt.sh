@@ -138,7 +138,7 @@ apt_mark() {
             shift
             [ -n "$1" ]
             for content in "$@"; do
-                sed -i -E "s/^(IgnorePkg\\s+=.*)( $content)(.*)\$/\\1\\3/" /etc/pacman.conf
+                sed -i -E "s/^(IgnorePkg\\s+=.*)( $content)(( \\S+)*)\$/\\1\\3/" /etc/pacman.conf
             done
             ;;
         *)
