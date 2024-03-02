@@ -49,8 +49,8 @@ Most commands are similar to the real `apt`'s commands, but:
 - `mark` is similar to `apt-mark`
 - `-l` and `-s` are similar to `dpkg -L` and `dpkg -S` respectively
 
-Note:
-- `--hold` and `--unhold` work just like the `apt-mark` command which **don't** support `glob pattern` arguments.
+**Note**:
+- `--hold` and `--unhold` work just like the `apt-mark` command which doesn't support `glob pattern` arguments.
 
 # Installation
 ```bash
