@@ -119,6 +119,7 @@ apt_autoclean() {
     pacman -Sc --noconfirm
 }
 apt_mark() {
+    local content
     case "$1" in
         --auto)
             shift
@@ -127,6 +128,16 @@ apt_mark() {
         --manual)
             shift
             pacman -D --asexplicit "$@"
+            ;;
+        --hold)
+            shift
+            [ -n "$1" ] && content=$({ echo -n "$@" && sed -nE 's/^IgnorePkg\s+=(.+)$/\1/p' /etc/pacman.conf; } | tr ' ' '\n' | sort -Vu | tr '\n' ' ' | head -c -1)
+            sed -i -E "s/^#?IgnorePkg\\s+=.*\$/IgnorePkg = $content/" /etc/pacman.conf
+            ;;
+        --unhold)
+            shift
+            [ -n "$1" ] && content=$(echo -n "$@" | tr ' ' '\n' | sort -Vu | tr '\n' ' ' | head -c -1)
+            sed -i -E "s/^(IgnorePkg\\s+=.*)( $content)(.*)\$/\\1\\3/" /etc/pacman.conf
             ;;
         *)
             echo "Unknown option: $1" >&2
@@ -187,6 +198,8 @@ apt_help() {
     echo '    mark OPTION PACKAGES          mark packages as manually or automatically installed'
     echo '        --auto'
     echo '        --manual'
+    echo '        --hold'
+    echo '        --unhold'
     echo '    -l PACKAGES                   list files owned by specific packages'
     echo '    -s FILES                      search for packages that own specific files'
     echo '    -c                            install the completion file'
@@ -243,7 +256,7 @@ _apt() {
                 ;;
             mark)
                 if [ "$cword" = 2 ] && [[ "$cur" == --* ]]; then
-                    COMPREPLY=($(compgen -W '--auto --manual' -- "$cur"))
+                    COMPREPLY=($(compgen -W '--auto --hold --manual --unhold' -- "$cur"))
                 else
                     _apt_complete_packages 'local'
                 fi

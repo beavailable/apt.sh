@@ -34,6 +34,8 @@ COMMANDS:
     mark OPTION PACKAGES          mark packages as manually or automatically installed
         --auto
         --manual
+        --hold
+        --unhold
     -l PACKAGES                   list files owned by specific packages
     -s FILES                      search for packages that own specific files
     -c                            install the completion file
