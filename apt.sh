@@ -136,8 +136,10 @@ apt_mark() {
             ;;
         --unhold)
             shift
-            [ -n "$1" ] && content=$(echo -n "$@" | tr ' ' '\n' | sort -Vu | tr '\n' ' ' | head -c -1)
-            sed -i -E "s/^(IgnorePkg\\s+=.*)( $content)(.*)\$/\\1\\3/" /etc/pacman.conf
+            [ -n "$1" ]
+            for content in "$@"; do
+                sed -i -E "s/^(IgnorePkg\\s+=.*)( $content)(.*)\$/\\1\\3/" /etc/pacman.conf
+            done
             ;;
         *)
             echo "Unknown option: $1" >&2
