@@ -21,6 +21,7 @@ COMMANDS:
         --manual-installed
         --removable
         --upgradable
+        --hold
     install [OPTION] PACKAGES     install packages
         --mark-auto
     reinstall [OPTION] PACKAGES   reinstall packages

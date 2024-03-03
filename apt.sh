@@ -33,7 +33,7 @@ apt_search() {
     fi
 }
 apt_list() {
-    local opts
+    local opts e expr
     case "${1:-}" in
         --installed)
             shift
@@ -55,11 +55,26 @@ apt_list() {
             shift
             opts='-Qu'
             ;;
+        --hold)
+            shift
+            e=$'\e'
+            if [ -t 1 ]; then
+                expr="/^IgnorePkg\\s+= (.+)$/{s//\\1/;/\\S+/{s//$e[0;1m\\0$e[0m/g;s/ /\\n/g;p}}"
+            else
+                expr='/^IgnorePkg\s+= (.+)$/{s//\1/;s/ /\n/g;p}'
+            fi
+            if [ -z "${1:-}" ]; then
+                sed -nE "$expr" /etc/pacman.conf
+            else
+                sed -nE "$expr" /etc/pacman.conf | sed -nE "/^(\\S\\[[[:digit:]]+;[[:digit:]]+m)?([^$e]+)(\\S\\[0m)?$/{h;s//\\2/;/$1/{g;p}}"
+            fi
+            return
+            ;;
         *)
             opts='-Sl'
             ;;
     esac
-    if [ $# = 0 ]; then
+    if [ -z "${1:-}" ]; then
         pacman $opts || true
     else
         if [ -t 1 ]; then
@@ -187,6 +202,7 @@ apt_help() {
     echo '        --manual-installed'
     echo '        --removable'
     echo '        --upgradable'
+    echo '        --hold'
     echo '    install [OPTION] PACKAGES     install packages'
     echo '        --mark-auto'
     echo '    reinstall [OPTION] PACKAGES   reinstall packages'
@@ -243,7 +259,7 @@ _apt() {
                 ;;
             list)
                 if [ "$cword" = 2 ]; then
-                    COMPREPLY=($(compgen -W '--auto-installed --installed --manual-installed --removable --upgradable' -- "$cur"))
+                    COMPREPLY=($(compgen -W '--auto-installed --hold --installed --manual-installed --removable --upgradable' -- "$cur"))
                 fi
                 ;;
             install | reinstall)
