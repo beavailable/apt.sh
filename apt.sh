@@ -146,12 +146,13 @@ apt_mark() {
             ;;
         --hold)
             shift
-            [ -n "$1" ] && content=$({ echo -n "$@" && sed -nE 's/^IgnorePkg\s+=(.+)$/\1/p' /etc/pacman.conf; } | tr ' ' '\n' | sort -Vu | tr '\n' ' ' | head -c -1)
+            [ -v 1 ]
+            content=$({ echo -n "$@" && sed -nE 's/^IgnorePkg\s+=(.+)$/\1/p' /etc/pacman.conf; } | tr ' ' '\n' | sort -Vu | tr '\n' ' ' | head -c -1)
             sed -i -E "s/^#?IgnorePkg\\s+=.*\$/IgnorePkg = $content/" /etc/pacman.conf
             ;;
         --unhold)
             shift
-            [ -n "$1" ]
+            [ -v 1 ]
             for content in "$@"; do
                 sed -i -E "s/^(IgnorePkg\\s+=.*)( $content)(( \\S+)*)\$/\\1\\3/" /etc/pacman.conf
             done
