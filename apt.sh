@@ -172,7 +172,7 @@ apt_-c() {
     mkdir -p /usr/local/share/bash-completion/completions
     {
         sed -nE '/^_apt.+/,/^}/p' $0
-        echo "complete -F _apt apt"
+        echo 'complete -F _apt apt'
     } >/usr/local/share/bash-completion/completions/apt
 }
 apt_-u() {
