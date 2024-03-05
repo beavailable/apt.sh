@@ -118,6 +118,7 @@ apt_remove() {
     pacman -Rc "$@"
 }
 apt_autoremove() {
+    local list
     if [ -n "${1:-}" ]; then
         pacman -Rcs "$@"
     elif list=$(pacman -Qqdt); then
