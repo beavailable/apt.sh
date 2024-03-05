@@ -115,14 +115,27 @@ apt_full-upgrade() {
     pacman -Su
 }
 apt_remove() {
-    pacman -Rc "$@"
+    local opts
+    if [ "$1" == '--save-configurations' ]; then
+        shift
+        opts='-Rc'
+    else
+        opts='-Rcn'
+    fi
+    pacman $opts "$@"
 }
 apt_autoremove() {
-    local list
+    local opts list
+    if [ "${1:-}" == '--save-configurations' ]; then
+        shift
+        opts='-Rcs'
+    else
+        opts='-Rcsn'
+    fi
     if [ -n "${1:-}" ]; then
-        pacman -Rcs "$@"
+        pacman $opts "$@"
     elif list=$(pacman -Qqdt); then
-        pacman -Rcs $(tr '\n' ' ' <<<"$list")
+        pacman $opts $(tr '\n' ' ' <<<"$list")
     fi
 }
 apt_autopurge() {
@@ -211,7 +224,9 @@ apt_help() {
     echo '        --mark-auto'
     echo '    full-upgrade                  upgrade the system'
     echo '    remove PACKAGES               remove packages'
+    echo '        --save-configurations'
     echo '    autoremove [PACKAGES]         automatically remove all unused packages'
+    echo '        --save-configurations'
     echo '    autopurge [PACKAGES]          an alias for autoremove'
     echo '    clean                         remove all files from the cache'
     echo '    autoclean                     remove old packages from the cache'
@@ -273,8 +288,12 @@ _apt() {
                     _apt_complete_packages
                 fi
                 ;;
-            remove | autoremove | autopurge | -l)
-                _apt_complete_packages 'local'
+            remove | autoremove | autopurge)
+                if [ "$cword" = 2 ] && [[ "$cur" == --* ]]; then
+                    COMPREPLY=($(compgen -W '--save-configurations' -- "$cur"))
+                else
+                    _apt_complete_packages 'local'
+                fi
                 ;;
             mark)
                 if [ "$cword" = 2 ] && [[ "$cur" == --* ]]; then
@@ -282,6 +301,9 @@ _apt() {
                 else
                     _apt_complete_packages 'local'
                 fi
+                ;;
+            \-l)
+                _apt_complete_packages 'local'
                 ;;
             \-s)
                 _filedir
