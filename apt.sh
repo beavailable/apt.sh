@@ -266,6 +266,8 @@ _apt() {
             install | reinstall)
                 if [ "$cword" = 2 ] && [[ "$cur" == --* ]]; then
                     COMPREPLY=($(compgen -W '--mark-auto' -- "$cur"))
+                elif [[ "$cur" == [./]* ]]; then
+                    _filedir
                 else
                     _apt_complete_packages
                 fi
