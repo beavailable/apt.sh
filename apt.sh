@@ -303,12 +303,16 @@ _apt() {
                 ;;
             mark)
                 if [ "$cword" = 2 ]; then
-                    if [ -z "$cur" ] || [[ "$cur" == --* ]]; then
-                        COMPREPLY=($(compgen -W '--auto --hold --manual --unhold' -- "$cur"))
-                        return
+                    COMPREPLY=($(compgen -W '--auto --hold --manual --unhold' -- "$cur"))
+                elif [ "${words[2]}" = '--unhold' ]; then
+                    if [[ "$cur" == -* ]]; then
+                        [ -z "$MINGW_PACKAGE_PREFIX" ] && return
+                        cur="$MINGW_PACKAGE_PREFIX$cur"
                     fi
+                    COMPREPLY=($(compgen -W "$(apt list --hold)" -- "$cur"))
+                else
+                    _apt_complete_packages 'local'
                 fi
-                _apt_complete_packages 'local'
                 ;;
             \-l)
                 _apt_complete_packages 'local'
