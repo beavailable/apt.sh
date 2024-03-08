@@ -191,14 +191,15 @@ apt_-c() {
     } >/usr/local/share/bash-completion/completions/apt
 }
 apt_-u() {
-    local ret
-    if curl --connect-timeout 10 -Lfo /usr/local/bin/.apt 'https://raw.githubusercontent.com/beavailable/apt.sh/main/apt.sh'; then
-        mv /usr/local/bin/.apt /usr/local/bin/apt
+    local tmp_name error_code
+    tmp_name=$(mktemp)
+    if curl --connect-timeout 10 -Lfo $tmp_name 'https://raw.githubusercontent.com/beavailable/apt.sh/main/apt.sh'; then
+        mv $tmp_name /usr/local/bin/apt
         apt -c
     else
-        ret=$?
-        rm -f /usr/local/bin/.apt
-        return $ret
+        error_code=$?
+        rm -f $tmp_name
+        return $error_code
     fi
 }
 apt_help() {
