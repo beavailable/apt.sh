@@ -243,17 +243,23 @@ apt_help() {
     echo '    help                          show this help message'
 }
 _apt_complete_packages() {
-    local opts
+    local packages
     if [[ "$cur" == -* ]]; then
         [ -z "$MINGW_PACKAGE_PREFIX" ] && return
         cur="$MINGW_PACKAGE_PREFIX$cur"
     fi
-    if [ "${1:-}" = 'local' ]; then
-        opts='-Qq'
-    else
-        opts='-Slq'
-    fi
-    COMPREPLY=($(compgen -W "$(pacman $opts)" -- "$cur"))
+    case "${1:-}" in
+        local)
+            packages=$(pacman -Qq)
+            ;;
+        hold)
+            packages=$(apt list --hold)
+            ;;
+        *)
+            packages=$(pacman -Slq)
+            ;;
+    esac
+    COMPREPLY=($(compgen -W "$packages" -- "$cur"))
 }
 _apt() {
     local cur prev words cword
@@ -306,11 +312,7 @@ _apt() {
                 if [ "$cword" = 2 ]; then
                     COMPREPLY=($(compgen -W '--auto --hold --manual --unhold' -- "$cur"))
                 elif [ "${words[2]}" = '--unhold' ]; then
-                    if [[ "$cur" == -* ]]; then
-                        [ -z "$MINGW_PACKAGE_PREFIX" ] && return
-                        cur="$MINGW_PACKAGE_PREFIX$cur"
-                    fi
-                    COMPREPLY=($(compgen -W "$(apt list --hold)" -- "$cur"))
+                    _apt_complete_packages 'hold'
                 else
                     _apt_complete_packages 'local'
                 fi
