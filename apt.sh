@@ -280,27 +280,35 @@ _apt() {
                 fi
                 ;;
             install | reinstall)
-                if [ "$cword" = 2 ] && [[ "$cur" == --* ]]; then
-                    COMPREPLY=($(compgen -W '--mark-auto' -- "$cur"))
-                elif [[ "$cur" == [./]* ]]; then
+                if [ "$cword" = 2 ]; then
+                    if [ -z "$cur" ] || [[ "$cur" == --* ]]; then
+                        COMPREPLY=($(compgen -W '--mark-auto' -- "$cur"))
+                        return
+                    fi
+                fi
+                if [[ "$cur" == [./]* ]]; then
                     _filedir
                 else
                     _apt_complete_packages
                 fi
                 ;;
             remove | autoremove | autopurge)
-                if [ "$cword" = 2 ] && [[ "$cur" == --* ]]; then
-                    COMPREPLY=($(compgen -W '--save-configurations' -- "$cur"))
-                else
-                    _apt_complete_packages 'local'
+                if [ "$cword" = 2 ]; then
+                    if [ -z "$cur" ] || [[ "$cur" == --* ]]; then
+                        COMPREPLY=($(compgen -W '--save-configurations' -- "$cur"))
+                        return
+                    fi
                 fi
+                _apt_complete_packages 'local'
                 ;;
             mark)
-                if [ "$cword" = 2 ] && [[ "$cur" == --* ]]; then
-                    COMPREPLY=($(compgen -W '--auto --hold --manual --unhold' -- "$cur"))
-                else
-                    _apt_complete_packages 'local'
+                if [ "$cword" = 2 ]; then
+                    if [ -z "$cur" ] || [[ "$cur" == --* ]]; then
+                        COMPREPLY=($(compgen -W '--auto --hold --manual --unhold' -- "$cur"))
+                        return
+                    fi
                 fi
+                _apt_complete_packages 'local'
                 ;;
             \-l)
                 _apt_complete_packages 'local'
