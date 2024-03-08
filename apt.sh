@@ -203,7 +203,7 @@ apt_-u() {
     fi
 }
 apt_help() {
-    echo "usage: $(basename $0) COMMAND [OPTIONS] [arguments]"
+    echo "usage: $(basename $0) COMMAND [OPTION]... [ARG]..."
     echo
     echo 'COMMANDS:'
     echo '    update [OPTION]               update list of available packages'

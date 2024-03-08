@@ -6,7 +6,7 @@ Because `pacman` sucks.
 
 # Usage
 ```
-usage: apt.sh COMMAND [OPTIONS] [arguments]
+usage: apt.sh COMMAND [OPTION]... [ARG]...
 
 COMMANDS:
     update [OPTION]               update list of available packages
