@@ -141,6 +141,26 @@ apt_autoremove() {
 apt_autopurge() {
     apt_autoremove "$@"
 }
+apt_depends() {
+    local opts
+    if [ "$1" == '--recurse' ]; then
+        shift
+        opts='-s'
+    else
+        opts='-s -d 1'
+    fi
+    pactree $opts "$@"
+}
+apt_rdepends() {
+    local opts
+    if [ "$1" == '--recurse' ]; then
+        shift
+        opts='-sr'
+    else
+        opts='-sr -d 1'
+    fi
+    pactree $opts "$@"
+}
 apt_clean() {
     pacman -Scc --noconfirm
 }
@@ -229,6 +249,10 @@ apt_help() {
     echo '    autoremove [PACKAGE]...           automatically remove all unused packages'
     echo '        --save-configurations'
     echo '    autopurge [PACKAGE]...            an alias for autoremove'
+    echo '    depends [OPTION] PACKAGE          list packages that a package depends on'
+    echo '        --recurse'
+    echo '    rdepends [OPTION] PACKAGE         list packages that depend on a package'
+    echo '        --recurse'
     echo '    clean                             remove all files from the cache'
     echo '    autoclean                         remove old packages from the cache'
     echo '    mark OPTION PACKAGE...            mark packages'
@@ -265,7 +289,7 @@ _apt() {
     local cur prev words cword
     _init_completion || return
     if [ "$cword" = 1 ]; then
-        COMPREPLY=($(compgen -W '-c -l -s -u autoclean autopurge autoremove clean download full-upgrade help install list mark reinstall remove search show update' -- "$cur"))
+        COMPREPLY=($(compgen -W '-c -l -s -u autoclean autopurge autoremove clean depends download full-upgrade help install list mark rdepends reinstall remove search show update' -- "$cur"))
     else
         case "${words[1]}" in
             update)
@@ -307,6 +331,15 @@ _apt() {
                     fi
                 fi
                 _apt_complete_packages 'local'
+                ;;
+            depends | rdepends)
+                if [ "$cword" = 2 ]; then
+                    if [ -z "$cur" ] || [[ "$cur" == --* ]]; then
+                        COMPREPLY=($(compgen -W '--recurse' -- "$cur"))
+                        return
+                    fi
+                fi
+                _apt_complete_packages
                 ;;
             mark)
                 if [ "$cword" = 2 ]; then

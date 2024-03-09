@@ -32,6 +32,10 @@ COMMANDS:
     autoremove [PACKAGE]...           automatically remove all unused packages
         --save-configurations
     autopurge [PACKAGE]...            an alias for autoremove
+    depends [OPTION] PACKAGE          list packages that a package depends on
+        --recurse
+    rdepends [OPTION] PACKAGE         list packages that depend on a package
+        --recurse
     clean                             remove all files from the cache
     autoclean                         remove old packages from the cache
     mark OPTION PACKAGE...            mark packages
