@@ -9,41 +9,41 @@ Because `pacman` sucks.
 usage: apt.sh COMMAND [OPTION]... [ARG]...
 
 COMMANDS:
-    update [OPTION]               update list of available packages
+    update [OPTION]                   update list of available packages
         --full-upgrade
-    show PACKAGES                 show package details
-    download PACKAGES             download packages
-    search [OPTION] REGEX         search for packages
+    show PACKAGE...                   show package details
+    download PACKAGE...               download packages
+    search [OPTION] REGEX             search for packages
         --names-only
-    list [OPTION] [REGEX]         list packages
+    list [OPTION] [REGEX]             list packages
         --auto-installed
         --installed
         --manual-installed
         --removable
         --upgradable
         --hold
-    install [OPTION] PACKAGES     install packages
+    install [OPTION] PACKAGE...       install packages
         --mark-auto
-    reinstall [OPTION] PACKAGES   reinstall packages
+    reinstall [OPTION] PACKAGE...     reinstall packages
         --mark-auto
-    full-upgrade                  upgrade the system
-    remove PACKAGES               remove packages
+    full-upgrade                      upgrade the system
+    remove PACKAGE...                 remove packages
         --save-configurations
-    autoremove [PACKAGES]         automatically remove all unused packages
+    autoremove [PACKAGE]...           automatically remove all unused packages
         --save-configurations
-    autopurge [PACKAGES]          an alias for autoremove
-    clean                         remove all files from the cache
-    autoclean                     remove old packages from the cache
-    mark OPTION PACKAGES          mark packages
+    autopurge [PACKAGE]...            an alias for autoremove
+    clean                             remove all files from the cache
+    autoclean                         remove old packages from the cache
+    mark OPTION PACKAGE...            mark packages
         --auto
         --manual
         --hold
         --unhold
-    -l PACKAGES                   list files owned by specific packages
-    -s FILES                      search for packages that own specific files
-    -c                            install the completion file
-    -u                            upgrade this tool from github
-    help                          show this help message
+    -l PACKAGE...                     list files owned by specific packages
+    -s FILE...                        search for packages that own specific files
+    -c                                install the completion file
+    -u                                upgrade this tool from github
+    help                              show this help message
 ```
 Most commands are similar to the real `apt`'s commands, but:
 - `list` accepts a `regular expression` argument instead of a `glob pattern` argument
