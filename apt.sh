@@ -317,7 +317,7 @@ _apt() {
                         return
                     fi
                 fi
-                if [[ "$cur" == [./]* ]]; then
+                if [[ "$cur" == [./$]* ]]; then
                     _filedir
                 else
                     _apt_complete_packages
