@@ -370,4 +370,8 @@ main() {
     fi
 }
 
-main "$@"
+if [ $# -gt 0 ]; then
+    main "$@"
+else
+    apt_help
+fi
