@@ -9,8 +9,7 @@ Because `pacman` sucks.
 usage: apt.sh COMMAND [OPTION]... [ARG]...
 
 COMMANDS:
-    update [OPTION]                   update list of available packages
-        --full-upgrade
+    update                            update list of available packages
     show PACKAGE...                   show package details
     download PACKAGE...               download packages
     search [OPTION] REGEX             search for packages
@@ -26,7 +25,8 @@ COMMANDS:
         --mark-auto
     reinstall [OPTION] PACKAGE...     reinstall packages
         --mark-auto
-    full-upgrade                      upgrade the system
+    full-upgrade [OPTION]             upgrade the system
+        --update
     remove PACKAGE...                 remove packages
         --save-configurations
     autoremove [PACKAGE]...           automatically remove all unused packages

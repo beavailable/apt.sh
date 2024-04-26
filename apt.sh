@@ -6,9 +6,6 @@ apt_update() {
     pacman -Sy
     if n=$(pacman -Quq | wc -l); then
         echo "$n packages can be upgraded. Run 'apt list --upgradable' to see them."
-        if [ "${1:-}" = '--full-upgrade' ]; then
-            apt_full-upgrade
-        fi
     else
         echo 'All packages are up to date.'
     fi
@@ -112,6 +109,9 @@ apt_reinstall() {
     apt_install --reinstall "$@"
 }
 apt_full-upgrade() {
+    if [ "${1:-}" = '--update' ]; then
+        apt_update
+    fi
     pacman -Su
 }
 apt_remove() {
@@ -226,8 +226,7 @@ apt_help() {
     echo "usage: $(basename $0) COMMAND [OPTION]... [ARG]..."
     echo
     echo 'COMMANDS:'
-    echo '    update [OPTION]                   update list of available packages'
-    echo '        --full-upgrade'
+    echo '    update                            update list of available packages'
     echo '    show PACKAGE...                   show package details'
     echo '    download PACKAGE...               download packages'
     echo '    search [OPTION] REGEX             search for packages'
@@ -243,7 +242,8 @@ apt_help() {
     echo '        --mark-auto'
     echo '    reinstall [OPTION] PACKAGE...     reinstall packages'
     echo '        --mark-auto'
-    echo '    full-upgrade                      upgrade the system'
+    echo '    full-upgrade [OPTION]             upgrade the system'
+    echo '        --update'
     echo '    remove PACKAGE...                 remove packages'
     echo '        --save-configurations'
     echo '    autoremove [PACKAGE]...           automatically remove all unused packages'
@@ -292,11 +292,6 @@ _apt() {
         COMPREPLY=($(compgen -W '-c -l -s -u autoclean autopurge autoremove clean depends download full-upgrade help install list mark rdepends reinstall remove search show update' -- "$cur"))
     else
         case "${words[1]}" in
-            update)
-                if [ "$cword" = 2 ]; then
-                    COMPREPLY=($(compgen -W '--full-upgrade' -- "$cur"))
-                fi
-                ;;
             show | download)
                 _apt_complete_packages
                 ;;
@@ -321,6 +316,11 @@ _apt() {
                     _filedir
                 else
                     _apt_complete_packages
+                fi
+                ;;
+            full-upgrade)
+                if [ "$cword" = 2 ]; then
+                    COMPREPLY=($(compgen -W '--update' -- "$cur"))
                 fi
                 ;;
             remove | autoremove | autopurge)
