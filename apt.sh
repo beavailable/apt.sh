@@ -94,7 +94,7 @@ apt_install() {
     else
         mark_auto=false
     fi
-    if [[ "$1" == *://* || -f "$1" ]]; then
+    if [[ "$1" == *://* ]] || [[ "$1" == *.tar.* && -f "$1" ]]; then
         opts='-U'
     else
         opts='-S'
