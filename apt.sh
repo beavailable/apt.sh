@@ -52,7 +52,7 @@ apt_list() {
             shift
             opts='-Qu'
             ;;
-        --hold)
+        --held)
             shift
             e=$'\e'
             if [ -t 1 ]; then
@@ -237,7 +237,7 @@ apt_help() {
     echo '        --manual-installed'
     echo '        --removable'
     echo '        --upgradable'
-    echo '        --hold'
+    echo '        --held'
     echo '    install [OPTION] PACKAGE...       install packages'
     echo '        --mark-auto'
     echo '    reinstall [OPTION] PACKAGE...     reinstall packages'
@@ -276,8 +276,8 @@ _apt_complete_packages() {
         local)
             packages=$(pacman -Qq)
             ;;
-        hold)
-            packages=$(apt list --hold)
+        held)
+            packages=$(apt list --held)
             ;;
         *)
             packages=$(pacman -Slq)
@@ -302,7 +302,7 @@ _apt() {
                 ;;
             list)
                 if [ "$cword" = 2 ]; then
-                    COMPREPLY=($(compgen -W '--auto-installed --hold --installed --manual-installed --removable --upgradable' -- "$cur"))
+                    COMPREPLY=($(compgen -W '--auto-installed --held --installed --manual-installed --removable --upgradable' -- "$cur"))
                 fi
                 ;;
             install | reinstall)
@@ -345,7 +345,7 @@ _apt() {
                 if [ "$cword" = 2 ]; then
                     COMPREPLY=($(compgen -W '--auto --hold --manual --unhold' -- "$cur"))
                 elif [ "${words[2]}" = '--unhold' ]; then
-                    _apt_complete_packages 'hold'
+                    _apt_complete_packages 'held'
                 else
                     _apt_complete_packages 'local'
                 fi

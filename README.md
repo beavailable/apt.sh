@@ -20,7 +20,7 @@ COMMANDS:
         --manual-installed
         --removable
         --upgradable
-        --hold
+        --held
     install [OPTION] PACKAGE...       install packages
         --mark-auto
     reinstall [OPTION] PACKAGE...     reinstall packages
