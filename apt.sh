@@ -116,21 +116,21 @@ apt_full-upgrade() {
 }
 apt_remove() {
     local opts
-    if [ "$1" == '--save-configurations' ]; then
+    if [ "$1" == '--purge' ]; then
         shift
-        opts='-Rc'
-    else
         opts='-Rcn'
+    else
+        opts='-Rc'
     fi
     pacman $opts "$@"
 }
 apt_autoremove() {
     local opts list
-    if [ "${1:-}" == '--save-configurations' ]; then
+    if [ "${1:-}" == '--purge' ]; then
         shift
-        opts='-Rcs'
-    else
         opts='-Rcsn'
+    else
+        opts='-Rcs'
     fi
     if [ -n "${1:-}" ]; then
         pacman $opts "$@"
@@ -139,7 +139,7 @@ apt_autoremove() {
     fi
 }
 apt_autopurge() {
-    apt_autoremove "$@"
+    apt_autoremove --purge "$@"
 }
 apt_depends() {
     local opts
@@ -226,45 +226,45 @@ apt_help() {
     echo "usage: $(basename $0) COMMAND [OPTION]... [ARG]..."
     echo
     echo 'COMMANDS:'
-    echo '    update                            update list of available packages'
-    echo '    show PACKAGE...                   show package details'
-    echo '    download PACKAGE...               download packages'
-    echo '    search [OPTION] REGEX             search for packages'
+    echo '    update                                update list of available packages'
+    echo '    show PACKAGE...                       show package details'
+    echo '    download PACKAGE...                   download packages'
+    echo '    search [OPTION] REGEX                 search for packages'
     echo '        --names-only'
-    echo '    list [OPTION] [REGEX]             list packages'
+    echo '    list [OPTION] [REGEX]                 list packages'
     echo '        --auto-installed'
     echo '        --installed'
     echo '        --manual-installed'
     echo '        --removable'
     echo '        --upgradable'
     echo '        --held'
-    echo '    install [OPTION] PACKAGE...       install packages'
+    echo '    install [OPTION] PACKAGE...           install packages'
     echo '        --mark-auto'
-    echo '    reinstall [OPTION] PACKAGE...     reinstall packages'
+    echo '    reinstall [OPTION] PACKAGE...         reinstall packages'
     echo '        --mark-auto'
-    echo '    full-upgrade [OPTION]             upgrade the system'
+    echo '    full-upgrade [OPTION]                 upgrade the system'
     echo '        --update'
-    echo '    remove PACKAGE...                 remove packages'
-    echo '        --save-configurations'
-    echo '    autoremove [PACKAGE]...           automatically remove all unused packages'
-    echo '        --save-configurations'
-    echo '    autopurge [PACKAGE]...            an alias for autoremove'
-    echo '    depends [OPTION] PACKAGE          list packages that a package depends on'
+    echo '    remove [OPTION] PACKAGE...            remove packages'
+    echo '        --purge'
+    echo '    autoremove [OPTION] [PACKAGE]...      automatically remove all unused packages'
+    echo '        --purge'
+    echo '    autopurge [PACKAGE]...                an alias for "autoremove --purge"'
+    echo '    depends [OPTION] PACKAGE              list packages that a package depends on'
     echo '        --recurse'
-    echo '    rdepends [OPTION] PACKAGE         list packages that depend on a package'
+    echo '    rdepends [OPTION] PACKAGE             list packages that depend on a package'
     echo '        --recurse'
-    echo '    clean                             remove all files from the cache'
-    echo '    autoclean                         remove old packages from the cache'
-    echo '    mark OPTION PACKAGE...            mark packages'
+    echo '    clean                                 remove all files from the cache'
+    echo '    autoclean                             remove old packages from the cache'
+    echo '    mark OPTION PACKAGE...                mark packages'
     echo '        --auto'
     echo '        --manual'
     echo '        --hold'
     echo '        --unhold'
-    echo '    -l PACKAGE...                     list files owned by specific packages'
-    echo '    -s FILE...                        search for packages that own specific files'
-    echo '    -c                                install the completion file'
-    echo '    -u                                upgrade this tool from github'
-    echo '    help                              show this help message'
+    echo '    -l PACKAGE...                         list files owned by specific packages'
+    echo '    -s FILE...                            search for packages that own specific files'
+    echo '    -c                                    install the completion file'
+    echo '    -u                                    upgrade this tool from github'
+    echo '    help                                  show this help message'
 }
 _apt_complete_packages() {
     local packages
@@ -323,10 +323,10 @@ _apt() {
                     COMPREPLY=($(compgen -W '--update' -- "$cur"))
                 fi
                 ;;
-            remove | autoremove | autopurge)
+            remove | autoremove)
                 if [ "$cword" = 2 ]; then
                     if [ -z "$cur" ] || [[ "$cur" == --* ]]; then
-                        COMPREPLY=($(compgen -W '--save-configurations' -- "$cur"))
+                        COMPREPLY=($(compgen -W '--purge' -- "$cur"))
                         return
                     fi
                 fi

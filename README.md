@@ -9,51 +9,50 @@ Because `pacman` sucks.
 usage: apt.sh COMMAND [OPTION]... [ARG]...
 
 COMMANDS:
-    update                            update list of available packages
-    show PACKAGE...                   show package details
-    download PACKAGE...               download packages
-    search [OPTION] REGEX             search for packages
+    update                                update list of available packages
+    show PACKAGE...                       show package details
+    download PACKAGE...                   download packages
+    search [OPTION] REGEX                 search for packages
         --names-only
-    list [OPTION] [REGEX]             list packages
+    list [OPTION] [REGEX]                 list packages
         --auto-installed
         --installed
         --manual-installed
         --removable
         --upgradable
         --held
-    install [OPTION] PACKAGE...       install packages
+    install [OPTION] PACKAGE...           install packages
         --mark-auto
-    reinstall [OPTION] PACKAGE...     reinstall packages
+    reinstall [OPTION] PACKAGE...         reinstall packages
         --mark-auto
-    full-upgrade [OPTION]             upgrade the system
+    full-upgrade [OPTION]                 upgrade the system
         --update
-    remove PACKAGE...                 remove packages
-        --save-configurations
-    autoremove [PACKAGE]...           automatically remove all unused packages
-        --save-configurations
-    autopurge [PACKAGE]...            an alias for autoremove
-    depends [OPTION] PACKAGE          list packages that a package depends on
+    remove [OPTION] PACKAGE...            remove packages
+        --purge
+    autoremove [OPTION] [PACKAGE]...      automatically remove all unused packages
+        --purge
+    autopurge [PACKAGE]...                an alias for "autoremove --purge"
+    depends [OPTION] PACKAGE              list packages that a package depends on
         --recurse
-    rdepends [OPTION] PACKAGE         list packages that depend on a package
+    rdepends [OPTION] PACKAGE             list packages that depend on a package
         --recurse
-    clean                             remove all files from the cache
-    autoclean                         remove old packages from the cache
-    mark OPTION PACKAGE...            mark packages
+    clean                                 remove all files from the cache
+    autoclean                             remove old packages from the cache
+    mark OPTION PACKAGE...                mark packages
         --auto
         --manual
         --hold
         --unhold
-    -l PACKAGE...                     list files owned by specific packages
-    -s FILE...                        search for packages that own specific files
-    -c                                install the completion file
-    -u                                upgrade this tool from github
-    help                              show this help message
+    -l PACKAGE...                         list files owned by specific packages
+    -s FILE...                            search for packages that own specific files
+    -c                                    install the completion file
+    -u                                    upgrade this tool from github
+    help                                  show this help message
 ```
 Most commands are similar to the real `apt`'s commands, but:
 - `list` accepts a `regular expression` argument instead of a `glob pattern` argument
 - `install` and `reinstall` can also accept urls as arguments
 - `--mark-auto` will mark packages as automatically installed in any cases
-- `remove` and `autoremove` delete configurations by default
 - `mark` is similar to `apt-mark`
 - `-l` and `-s` are similar to `dpkg -L` and `dpkg -S` respectively
 
