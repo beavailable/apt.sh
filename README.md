@@ -25,8 +25,9 @@ COMMANDS:
         --mark-auto
     reinstall [OPTION] PACKAGE...         reinstall packages
         --mark-auto
-    full-upgrade [OPTION]                 upgrade the system
+    full-upgrade [OPTIONS]                upgrade the system
         --update
+        --overwrite
     remove [OPTION] PACKAGE...            remove packages
         --purge
     autoremove [OPTION] [PACKAGE]...      automatically remove all unused packages

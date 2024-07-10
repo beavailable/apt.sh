@@ -109,10 +109,31 @@ apt_reinstall() {
     apt_install --reinstall "$@"
 }
 apt_full-upgrade() {
-    if [ "${1:-}" = '--update' ]; then
+    local update overwrite opts
+    update=false
+    overwrite=false
+    while true; do
+        case "${1:-}" in
+            --update)
+                update=true
+                ;;
+            --overwrite)
+                overwrite=true
+                ;;
+            *)
+                break
+                ;;
+        esac
+        shift
+    done
+    if $update; then
         apt_update
     fi
-    pacman -Su
+    opts='-Su'
+    if $overwrite; then
+        opts="$opts --overwrite '*'"
+    fi
+    pacman $opts
 }
 apt_remove() {
     local opts
@@ -242,8 +263,9 @@ apt_help() {
     echo '        --mark-auto'
     echo '    reinstall [OPTION] PACKAGE...         reinstall packages'
     echo '        --mark-auto'
-    echo '    full-upgrade [OPTION]                 upgrade the system'
+    echo '    full-upgrade [OPTIONS]                upgrade the system'
     echo '        --update'
+    echo '        --overwrite'
     echo '    remove [OPTION] PACKAGE...            remove packages'
     echo '        --purge'
     echo '    autoremove [OPTION] [PACKAGE]...      automatically remove all unused packages'
@@ -319,8 +341,8 @@ _apt() {
                 fi
                 ;;
             full-upgrade)
-                if [ "$cword" = 2 ]; then
-                    COMPREPLY=($(compgen -W '--update' -- "$cur"))
+                if [ $cword -le 3 ]; then
+                    COMPREPLY=($(compgen -W '--overwrite --update' -- "$cur"))
                 fi
                 ;;
             remove | autoremove)
