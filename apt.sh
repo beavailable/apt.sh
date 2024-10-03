@@ -335,7 +335,7 @@ _apt() {
                     fi
                 fi
                 if [[ "$cur" == [./$]* ]]; then
-                    _filedir
+                    _comp_compgen_filedir
                 else
                     _apt_complete_packages
                 fi
@@ -376,7 +376,7 @@ _apt() {
                 _apt_complete_packages 'local'
                 ;;
             \-s)
-                _filedir
+                _comp_compgen_filedir
                 ;;
         esac
     fi
