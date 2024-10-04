@@ -309,7 +309,7 @@ _apt_complete_packages() {
 }
 _apt() {
     local cur prev words cword
-    _init_completion || return
+    _comp_initialize || return
     if [ "$cword" = 1 ]; then
         COMPREPLY=($(compgen -W '-c -l -s -u autoclean autopurge autoremove clean depends download full-upgrade help install list mark rdepends reinstall remove search show update' -- "$cur"))
     else
