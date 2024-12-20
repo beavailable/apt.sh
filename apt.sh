@@ -11,7 +11,14 @@ apt_update() {
     fi
 }
 apt_show() {
-    pacman -Si "$@"
+    local opts
+    if [ "$1" == '--full' ]; then
+        shift
+        opts='-Sii'
+    else
+        opts='-Si'
+    fi
+    pacman $opts "$@"
 }
 apt_download() {
     pacman -Swdd --noconfirm --cachedir . "$@"
@@ -248,7 +255,8 @@ apt_help() {
     echo
     echo 'COMMANDS:'
     echo '    update                                update list of available packages'
-    echo '    show PACKAGE...                       show package details'
+    echo '    show [OPTION] PACKAGE...              show package details'
+    echo '        --full'
     echo '    download PACKAGE...                   download packages'
     echo '    search [OPTION] REGEX                 search for packages'
     echo '        --names-only'
@@ -314,7 +322,16 @@ _apt() {
         COMPREPLY=($(compgen -W '-c -l -s -u autoclean autopurge autoremove clean depends download full-upgrade help install list mark rdepends reinstall remove search show update' -- "$cur"))
     else
         case "${words[1]}" in
-            show | download)
+            show)
+                if [ "$cword" = 2 ]; then
+                    if [ -z "$cur" ] || [[ "$cur" == --* ]]; then
+                        COMPREPLY=($(compgen -W '--full' -- "$cur"))
+                        return
+                    fi
+                fi
+                _apt_complete_packages
+                ;;
+            download)
                 _apt_complete_packages
                 ;;
             search)

@@ -10,7 +10,8 @@ usage: apt.sh COMMAND [OPTION]... [ARG]...
 
 COMMANDS:
     update                                update list of available packages
-    show PACKAGE...                       show package details
+    show [OPTION] PACKAGE...              show package details
+        --full
     download PACKAGE...                   download packages
     search [OPTION] REGEX                 search for packages
         --names-only
