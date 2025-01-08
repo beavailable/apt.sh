@@ -163,7 +163,7 @@ apt_autoremove() {
     if [ -n "${1:-}" ]; then
         pacman $opts "$@"
     elif list=$(pacman -Qqdt); then
-        pacman $opts $(tr '\n' ' ' <<<"$list")
+        pacman $opts $list
     fi
 }
 apt_autopurge() {
