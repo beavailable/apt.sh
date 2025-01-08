@@ -318,12 +318,12 @@ _apt_complete_packages() {
 _apt() {
     local cur prev words cword
     _comp_initialize || return
-    if [ "$cword" = 1 ]; then
+    if [ $cword -eq 1 ]; then
         COMPREPLY=($(compgen -W '-c -l -s -u autoclean autopurge autoremove clean depends download full-upgrade help install list mark rdepends reinstall remove search show update' -- "$cur"))
     else
         case "${words[1]}" in
             show)
-                if [ "$cword" = 2 ]; then
+                if [ $cword -eq 2 ]; then
                     if [ -z "$cur" ] || [[ "$cur" == --* ]]; then
                         COMPREPLY=($(compgen -W '--full' -- "$cur"))
                         return
@@ -335,17 +335,17 @@ _apt() {
                 _apt_complete_packages
                 ;;
             search)
-                if [ "$cword" = 2 ]; then
+                if [ $cword -eq 2 ]; then
                     COMPREPLY=($(compgen -W '--names-only' -- "$cur"))
                 fi
                 ;;
             list)
-                if [ "$cword" = 2 ]; then
+                if [ $cword -eq 2 ]; then
                     COMPREPLY=($(compgen -W '--auto-installed --held --installed --manual-installed --removable --upgradable' -- "$cur"))
                 fi
                 ;;
             install | reinstall)
-                if [ "$cword" = 2 ]; then
+                if [ $cword -eq 2 ]; then
                     if [ -z "$cur" ] || [[ "$cur" == --* ]]; then
                         COMPREPLY=($(compgen -W '--mark-auto' -- "$cur"))
                         return
@@ -363,7 +363,7 @@ _apt() {
                 fi
                 ;;
             remove | autoremove)
-                if [ "$cword" = 2 ]; then
+                if [ $cword -eq 2 ]; then
                     if [ -z "$cur" ] || [[ "$cur" == --* ]]; then
                         COMPREPLY=($(compgen -W '--purge' -- "$cur"))
                         return
@@ -372,7 +372,7 @@ _apt() {
                 _apt_complete_packages 'local'
                 ;;
             depends | rdepends)
-                if [ "$cword" = 2 ]; then
+                if [ $cword -eq 2 ]; then
                     if [ -z "$cur" ] || [[ "$cur" == --* ]]; then
                         COMPREPLY=($(compgen -W '--recurse' -- "$cur"))
                         return
@@ -381,7 +381,7 @@ _apt() {
                 _apt_complete_packages
                 ;;
             mark)
-                if [ "$cword" = 2 ]; then
+                if [ $cword -eq 2 ]; then
                     COMPREPLY=($(compgen -W '--auto --hold --manual --unhold' -- "$cur"))
                 elif [ "${words[2]}" = '--unhold' ]; then
                     _apt_complete_packages 'held'
