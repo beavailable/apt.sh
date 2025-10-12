@@ -352,7 +352,7 @@ _apt() {
                     fi
                 fi
                 if [[ "$cur" == [./$]* ]]; then
-                    _comp_compgen_filedir
+                    _comp_compgen_filedir 'pkg.tar.zst'
                 else
                     _apt_complete_packages
                 fi
