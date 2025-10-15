@@ -1,10 +1,10 @@
 # apt.sh
 This is a user-friendly shell wrapper for `pacman` in `msys2`, you can use it just as using the real `apt` in a debian system.
 
-# Why not just use pacman
+## Why not just use pacman
 Because `pacman` sucks.
 
-# Usage
+## Usage
 ```
 usage: apt.sh COMMAND [OPTION]... [ARG]...
 
@@ -61,17 +61,17 @@ Most commands are similar to the real `apt`'s commands, except that:
 **Note**:
 - `mark --hold` and `mark --unhold` work just like the `apt-mark` command which doesn't support `glob pattern` arguments.
 
-# Installation
+## Installation
 ```bash
 curl -Lfo /usr/local/bin/apt https://raw.githubusercontent.com/beavailable/apt.sh/main/apt.sh
 ```
 
-# Uninstallation
+## Uninstallation
 ```bash
 rm -f /usr/local/bin/apt /usr/local/share/bash-completion/completions/apt
 ```
 
-# Tips
+## Tips
 After installing the completion file, in all cases that a package name is needed as an argument, you can simply type `-<tab>` to complete the current `MINGW_PACKAGE_PREFIX` for you.
 
 For example, if you type `apt install -<tab>`, you'll get:
